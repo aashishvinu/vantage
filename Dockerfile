@@ -11,17 +11,16 @@ RUN npm run build
 
 # Production image
 FROM nginx:alpine
-WORKDIR /usr/share/nginx/html
 
-# Remove default nginx static assets
-RUN rm -rf ./*
+# Remove default nginx static assets & config
+RUN rm -rf /usr/share/nginx/html/* \
+    && rm -rf /etc/nginx/conf.d/default.conf
 
 # Copy built assets from build stage
-COPY --from=build /app/dist .
+COPY --from=build /app/dist /usr/share/nginx/html
 
-# Copy custom nginx config (optional)
-# COPY nginx.conf /etc/nginx/nginx.conf
+# Copy our custom nginx config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
-
