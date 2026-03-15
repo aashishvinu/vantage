@@ -7,23 +7,22 @@ import { Toaster } from "react-hot-toast";
 import "leaflet/dist/leaflet.css";
 
 import TimeAgo from "javascript-time-ago";
-import en from "javascript-time-ago/locale/en.json";
-import ru from "javascript-time-ago/locale/ru.json";
+import en from "javascript-time-ago/locale/en";
+import ru from "javascript-time-ago/locale/ru";
+import Radar from "radar-sdk-js";
+import "radar-sdk-js/dist/radar.css";
+import { appConfig, configStatus } from "./config";
+
+if (configStatus.hasRadar) {
+    Radar.initialize(appConfig.radarPublishableKey);
+} else {
+    console.warn(
+        "Missing VITE_RADAR_PUBLISHABLE_KEY. Radar SDK was not initialized."
+    );
+}
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
-
-// Fix for Leaflet default icons in Vite/React
-import L from "leaflet";
-import icon from "leaflet/dist/images/marker-icon.png";
-import iconShadow from "leaflet/dist/images/marker-shadow.png";
-
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-    iconRetinaUrl: icon,
-    iconUrl: icon,
-    shadowUrl: iconShadow,
-});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>

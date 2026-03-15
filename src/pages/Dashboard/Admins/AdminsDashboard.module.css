@@ -63,9 +63,164 @@
     border-radius: 5px;
 }
 
+.geofenceControlContainer {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background-color: #f9fafb;
+}
+
+.geofenceControlHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.geofenceTitle {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #1d1d1d;
+}
+
+.geofenceValue {
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.geofenceSlider {
+    width: 100%;
+    cursor: pointer;
+}
+
+
+
+.geofenceInputRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.geofenceInputLabel {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.geofenceNumberInput {
+    width: 6rem;
+    padding: 0.35rem 0.45rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+.geofenceResetButton {
+    margin-top: 0.5rem;
+    width: 100%;
+    background-color: #fff;
+    color: #1d1d1d;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 0.45rem 0.6rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.geofenceResetButton:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.geofenceAlertPanel {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    background-color: #fef2f2;
+}
+
+.geofenceAlertTitle {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #991b1b;
+    margin-bottom: 0.35rem;
+}
+
+.geofenceAlertItem {
+    font-size: 0.85rem;
+    color: #7f1d1d;
+}
+
+.messageComposer {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background-color: #f9fafb;
+}
+
+.messageComposerTitle {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1d1d1d;
+    margin-bottom: 0.5rem;
+}
+
+.memberSelect,
+.memberMessageInput {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.9rem;
+    background-color: #fff;
+}
+
+.memberSelect {
+    margin-bottom: 0.5rem;
+}
+
+.memberMessageInput {
+    resize: vertical;
+    min-height: 4.5rem;
+}
+
+.sendMessageButton {
+    margin-top: 0.6rem;
+    background-color: #1d1d1d;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+}
+
 .nearbyStudent {
     border-bottom: 1px solid #e5e7eb;
     padding: 1rem 0;
+}
+
+.statusInside,
+.statusOutside {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.statusInside {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.statusOutside {
+    background-color: #fee2e2;
+    color: #b91c1c;
 }
 
 .nearbyStudentData {

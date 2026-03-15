@@ -97,6 +97,34 @@
   margin-bottom: 1rem;
 }
 
+.userMiniMapCard {
+  width: min(720px, calc(100% - 4rem));
+  margin-top: 2rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.userMiniMapHeading {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.userMiniMapSubtext {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-top: 0.2rem;
+  margin-bottom: 0.85rem;
+}
+
+.userMiniMap {
+  overflow: hidden;
+  border-radius: 10px;
+}
+
 .userLocation {
   text-align: center;
 }
@@ -121,6 +149,17 @@
   border-radius: 5px;
   cursor: pointer;
   margin-top: 1rem;
+}
+
+.warningBanner {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background-color: #fef2f2;
+  color: #991b1b;
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 .notificationsContainer {
@@ -158,4 +197,24 @@
   margin: 0.5rem 0;
   border-radius: 5px;
   background-color: #f9fafb;
+}
+
+.warningNotification {
+  border: 1px solid #fecaca;
+  background-color: #fef2f2;
+}
+
+.infoNotification {
+  border: 1px solid #bfdbfe;
+  background-color: #eff6ff;
+}
+
+.notificationText {
+  font-size: 0.95rem;
+  color: #1f2937;
+}
+
+.notificationTime {
+  font-size: 0.8rem;
+  color: #6b7280;
 }

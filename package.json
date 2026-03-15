@@ -10,8 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.20.8",
     "@supabase/supabase-js": "^2.42.0",
+    "javascript-time-ago": "^2.5.10",
     "leaflet": "^1.9.4",
+    "maplibre-gl": "^5.16.0",
+    "radar-sdk-js": "^4.5.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",

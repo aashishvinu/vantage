@@ -126,7 +126,7 @@ function toRadians(degrees: number): number {
 
 export const checkAuth = async ({
     navigate,
-    toast,
+    toast: _toast,
 }: {
     navigate: NavigateFunction;
     toast: any;
@@ -134,7 +134,6 @@ export const checkAuth = async ({
     const id = localStorage.getItem("userObject");
 
     if (!id) {
-        toast.error("Please login to continue.");
         navigate("/");
     }
 };
