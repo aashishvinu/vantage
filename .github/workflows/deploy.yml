@@ -59,23 +59,30 @@ jobs:
       - name: Load build variables
         shell: bash
         run: |
-          set -a
-          . ./docker.env
-          set +a
-          {
-            echo "VITE_SUPABASE_URL<<EOF"
-            printf '%s\n' "${VITE_SUPABASE_URL}"
-            echo "EOF"
-            echo "VITE_SUPABASE_ANON_KEY<<EOF"
-            printf '%s\n' "${VITE_SUPABASE_ANON_KEY}"
-            echo "EOF"
-            echo "VITE_GOOGLE_MAPS_API_KEY<<EOF"
-            printf '%s\n' "${VITE_GOOGLE_MAPS_API_KEY}"
-            echo "EOF"
-            echo "VITE_RADAR_PUBLISHABLE_KEY<<EOF"
-            printf '%s\n' "${VITE_RADAR_PUBLISHABLE_KEY}"
-            echo "EOF"
-          } >> "${GITHUB_ENV}"
+          for key in \
+            VITE_SUPABASE_URL \
+            VITE_SUPABASE_ANON_KEY \
+            VITE_GOOGLE_MAPS_API_KEY \
+            VITE_RADAR_PUBLISHABLE_KEY
+          do
+            value="$(
+              awk -v target_key="${key}" '
+                $0 ~ "^[[:space:]]*" target_key "[[:space:]]*=" {
+                  sub(/^[^=]*=/, "", $0)
+                  sub(/\r$/, "", $0)
+                  gsub(/^[[:space:]]+|[[:space:]]+$/, "", $0)
+                  print $0
+                  exit
+                }
+              ' docker.env
+            )"
+
+            {
+              echo "${key}<<EOF"
+              printf '%s\n' "${value}"
+              echo "EOF"
+            } >> "${GITHUB_ENV}"
+          done
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
