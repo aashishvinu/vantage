@@ -5,7 +5,7 @@ import MapComponent from "./MapComponent";
 
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { calculateDistance, checkAuth } from "../../utils";
+import { calculateDistance, checkAuth, formatDistance } from "../../utils";
 import ReactTimeAgo from "react-time-ago";
 
 const LIVE_LOCATION_WINDOW_MS = 60 * 1000;
@@ -628,7 +628,7 @@ const AdminsDashboard = () => {
                     key={entry.user.id}
                     className={styles.geofenceAlertItem}
                   >
-                    {entry.user.name} is {Math.round(entry.distanceFromGeofenceCenter || 0)} m
+                    {entry.user.name} is {formatDistance(entry.distanceFromGeofenceCenter || 0)}
                     from the geofence center
                   </p>
                 ))}
@@ -667,8 +667,7 @@ const AdminsDashboard = () => {
                         </p>
 
                         <p>
-                          {(distanceFromAdmin || 0).toFixed(2)}{" "}
-                          meters
+                          {formatDistance(distanceFromAdmin || 0)}
                         </p>
                       </div>
                     )}

@@ -109,12 +109,15 @@ export function calculateDistance(location1: Coordinate, location2: Coordinate):
     // Calculate the distance in kilometers
     const distanceInKm = earthRadius * c;
 
-    // Convert to meters if distance is less than 1 kilometer
-    if (distanceInKm < 1) {
-        return Math.round(distanceInKm * 1000);
+    return distanceInKm * 1000;
+}
+
+export function formatDistance(distanceInMeters: number): string {
+    if (distanceInMeters < 1000) {
+        return `${Math.round(distanceInMeters)} m`;
     }
 
-    return distanceInKm;
+    return `${(distanceInMeters / 1000).toFixed(2)} km`;
 }
 
 // Helper function to convert degrees to radians
