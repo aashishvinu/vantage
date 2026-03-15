@@ -29,9 +29,8 @@ RUN rm -rf ./*
 # Copy built assets from build stage
 COPY --from=build /app/dist .
 
-# Copy custom nginx config (optional)
-# COPY nginx.conf /etc/nginx/nginx.conf
+# SPA fallback for React Router browser history.
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
-

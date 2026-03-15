@@ -1,11 +1,11 @@
-import {useContext} from "react";
+import { useContext } from "react";
 import AppContext from "../../contexts/appContext";
 import styles from "./Login.module.css";
-import {signup} from "./services";
-import {Link, useNavigate} from "react-router-dom";
+import { signup } from "./services";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
-    const {supabase} = useContext(AppContext);
+    const { supabase } = useContext(AppContext);
     const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -23,23 +23,37 @@ const Signup = () => {
     return (
         <div className={styles.themeContainer}>
             <div className={styles.authContainer}>
-                <div className={styles.authLeftSide}>
-                    <p className={styles.leftSideFeatures}>Fast • Efficient • Reliable</p>
-                    <p className={styles.authLeftText}>Hey Travellers, Welcome to Vantage</p>
+                <section className={styles.authLeftSide}>
+                    <div className={styles.brandRow}>
+                        <img src="/logo_no_bg.png" alt="Vantage logo" className={styles.brandLogo} />
+                        <div>
+                            <p className={styles.brandName}>Vantage</p>
+                            <p className={styles.brandTag}>Realtime field coordination</p>
+                        </div>
+                    </div>
+
+                    <div className={styles.heroBadge}>Set up once and move faster</div>
+                    <p className={styles.leftSideFeatures}>Join • Organize • Track</p>
+                    <h1 className={styles.authLeftText}>Create your account and step straight into live rooms.</h1>
                     <p className={styles.authLeftSubText}>
-                        Track your peers easily and efficiently in real-time and get the best out of
-                        your journey.
+                        A simple signup flow that gets you from account creation to room access without extra clutter.
                     </p>
-                </div>
-                <div className={styles.authRightSide}>
-                    <h1 className={styles.authHeader}>Sign Up to Vantage</h1>
+                </section>
+
+                <section className={styles.authRightSide}>
+                    <div className={styles.formEyebrow}>Create account</div>
+                    <h1 className={styles.authHeader}>Set up your Vantage profile</h1>
                     <p className={styles.authSubHeader}>
-                        Start Managing Your Peers Faster and Better
+                        Create your account to manage rooms, coordinate members, and start using Vantage.
                     </p>
+
                     <form onSubmit={handleSubmit} className={styles.formContainer}>
                         <div className={styles.inputContainer}>
-                            <p className={styles.inputLabel}>Enter Your email address*</p>
+                            <label className={styles.inputLabel} htmlFor="signup-email">
+                                Email address
+                            </label>
                             <input
+                                id="signup-email"
                                 type="email"
                                 name="email"
                                 placeholder="johndoe@gmail.com"
@@ -47,9 +61,13 @@ const Signup = () => {
                                 className={styles.authInput}
                             />
                         </div>
+
                         <div className={styles.inputContainer}>
-                            <p className={styles.inputLabel}>Set Your Password*</p>
+                            <label className={styles.inputLabel} htmlFor="signup-password">
+                                Password
+                            </label>
                             <input
+                                id="signup-password"
                                 type="password"
                                 name="password"
                                 placeholder="******"
@@ -57,9 +75,13 @@ const Signup = () => {
                                 className={styles.authInput}
                             />
                         </div>
+
                         <div className={styles.inputContainer}>
-                            <p className={styles.inputLabel}>Enter Your Full Name*</p>
+                            <label className={styles.inputLabel} htmlFor="signup-name">
+                                Full name
+                            </label>
                             <input
+                                id="signup-name"
                                 type="text"
                                 name="fullName"
                                 placeholder="John Doe"
@@ -67,25 +89,32 @@ const Signup = () => {
                                 className={styles.authInput}
                             />
                         </div>
+
                         <div className={styles.inputContainer}>
-                            <p className={styles.inputLabel}>Enter Your Phone Number (optional)</p>
+                            <label className={styles.inputLabel} htmlFor="signup-phone">
+                                Phone number
+                            </label>
                             <input
+                                id="signup-phone"
                                 type="tel"
                                 name="phoneNumber"
                                 placeholder="9856748595"
                                 className={styles.authInput}
                             />
                         </div>
+
                         <div className={styles.buttons}>
                             <button type="submit" className={styles.authButton}>
-                                Sign Up
+                                Create account
                             </button>
                             <Link to="/">
-                                <button className={styles.secondaryAuthButton}>Login</button>
+                                <button type="button" className={styles.secondaryAuthButton}>
+                                    Back to login
+                                </button>
                             </Link>
                         </div>
                     </form>
-                </div>
+                </section>
             </div>
         </div>
     );

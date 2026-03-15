@@ -1,0 +1,20 @@
+{
+  "name": "Vantage",
+  "short_name": "Vantage",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#111827",
+  "icons": [
+    {
+      "src": "/logo_no_bg.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo_no_bg.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

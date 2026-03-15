@@ -1,362 +1,203 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Manrope:wght@400;500;600;700&display=swap');
 
 :root {
-    --bg-deep: #050816;
-    --bg-panel: rgba(10, 15, 30, 0.88);
-    --bg-soft: rgba(246, 249, 255, 0.92);
-    --border-dark: rgba(148, 163, 184, 0.16);
-    --border-light: rgba(15, 23, 42, 0.1);
-    --text-strong: #081120;
-    --text-soft: #526076;
-    --text-muted: #8b97ab;
-    --brand: #3b82f6;
-    --brand-strong: #1d4ed8;
-    --brand-glow: rgba(59, 130, 246, 0.28);
+    --bg-base: #f6f8fc;
+    --bg-tint: #eef4ff;
     --surface: #ffffff;
+    --surface-alt: #f8fbff;
+    --border: rgba(15, 23, 42, 0.08);
+    --border-strong: rgba(15, 23, 42, 0.14);
+    --text: #0f172a;
+    --text-soft: #526076;
+    --text-muted: #8a96a8;
+    --brand: #2563eb;
+    --brand-dark: #173ea6;
+    --brand-soft: rgba(37, 99, 235, 0.1);
+    --shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.08);
+    --shadow-md: 0 12px 30px rgba(15, 23, 42, 0.06);
 }
 
 .themeContainer {
     min-height: 100vh;
-    font-family: 'Manrope', sans-serif;
+    padding: 1.5rem;
+    font-family: "Manrope", sans-serif;
     background:
-        radial-gradient(circle at 18% 18%, rgba(59, 130, 246, 0.16), transparent 22%),
-        radial-gradient(circle at 82% 14%, rgba(14, 165, 233, 0.12), transparent 18%),
-        linear-gradient(180deg, #070b17 0%, #0a1120 45%, #050816 100%);
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 24%),
+        linear-gradient(180deg, var(--bg-base) 0%, #f3f6fb 100%);
 }
 
 .authContainer {
-    width: min(1240px, calc(100% - 2rem));
-    min-height: 100vh;
+    width: min(1120px, 100%);
+    min-height: calc(100vh - 3rem);
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1.12fr 0.88fr;
-    align-items: stretch;
-    gap: 0;
+    grid-template-columns: 1.02fr 0.98fr;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.authLeftSide,
+.authRightSide,
+.roomsManagerCard,
+.roomsListCard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    box-shadow: var(--shadow-lg);
 }
 
 .authLeftSide {
-    position: relative;
-    overflow: hidden;
-    padding: 3.75rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background:
-        linear-gradient(155deg, rgba(8, 13, 27, 0.96) 0%, rgba(10, 17, 34, 0.88) 58%, rgba(24, 58, 144, 0.34) 100%);
-    border: 1px solid var(--border-dark);
-    border-right: none;
-    border-radius: 32px 0 0 32px;
-    box-shadow:
-        0 30px 90px rgba(2, 6, 23, 0.55),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-.authLeftSide::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image:
-        linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
-    background-size: 42px 42px;
-    opacity: 0.2;
-    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.95), transparent 92%);
-    pointer-events: none;
-}
-
-.authLeftSide::after {
-    content: "";
-    position: absolute;
-    right: -7rem;
-    bottom: -7rem;
-    width: 22rem;
-    height: 22rem;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(96, 165, 250, 0.26), transparent 70%);
-    filter: blur(10px);
-    pointer-events: none;
+    padding: 2.4rem;
+    background: linear-gradient(180deg, var(--surface-alt) 0%, #edf4ff 100%);
 }
 
 .authRightSide {
-    position: relative;
+    padding: 2.4rem;
+}
+
+.brandRow {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 2.75rem;
-    background:
-        linear-gradient(180deg, rgba(247, 250, 255, 0.97) 0%, rgba(234, 241, 252, 0.96) 100%);
-    border: 1px solid var(--border-dark);
-    border-left: none;
-    border-radius: 0 32px 32px 0;
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.55),
-        0 24px 80px rgba(2, 6, 23, 0.18);
-}
-
-.authRightSide::before {
-    content: "";
-    position: absolute;
-    inset: 1.15rem;
-    border: 1px solid rgba(148, 163, 184, 0.16);
-    border-radius: 24px;
-    pointer-events: none;
-}
-
-.leftTop,
-.leftBottom {
-    position: relative;
-    z-index: 1;
-}
-
-.heroLogoWrap {
-    width: 78px;
-    height: 78px;
-    display: grid;
-    place-items: center;
-    border-radius: 24px;
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(59, 130, 246, 0.18));
-    border: 1px solid rgba(191, 219, 254, 0.18);
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.08),
-        0 22px 44px rgba(15, 23, 42, 0.34);
-    margin-bottom: 1.35rem;
-}
-
-.heroLogo {
-    width: 52px;
-    height: 52px;
-    object-fit: contain;
-}
-
-.heroBadge {
-    display: inline-flex;
-    align-items: center;
-    width: fit-content;
-    padding: 0.5rem 0.95rem;
-    border-radius: 999px;
-    background: rgba(59, 130, 246, 0.14);
-    border: 1px solid rgba(96, 165, 250, 0.26);
-    color: #dbeafe;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    margin-bottom: 1.2rem;
-}
-
-.leftSideFeatures {
-    margin-bottom: 1rem;
-    color: rgba(125, 211, 252, 0.78);
-    font-size: 0.76rem;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-}
-
-.authLeftText {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(3rem, 5vw, 5.4rem);
-    font-weight: 700;
-    line-height: 0.94;
-    letter-spacing: -0.06em;
-    color: #f8fbff;
-    max-width: 10ch;
-    margin-bottom: 1.35rem;
-    text-wrap: balance;
-}
-
-.authLeftText em {
-    color: #7dd3fc;
-    font-style: normal;
-}
-
-.authLeftSubText {
-    max-width: 34rem;
-    color: rgba(226, 232, 240, 0.76);
-    font-size: 1rem;
-    line-height: 1.9;
-    font-weight: 500;
-}
-
-.heroMetrics {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.9rem;
-    margin-top: 2.2rem;
+    margin-bottom: 1.25rem;
 }
 
-.metricCard {
-    padding: 1.2rem 1.15rem;
-    border-radius: 22px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(15, 23, 42, 0.06));
-    border: 1px solid rgba(148, 163, 184, 0.16);
-    display: flex;
-    flex-direction: column;
-    gap: 0.45rem;
+.brandLogo {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    border-radius: 18px;
+    padding: 0.45rem;
+    background: rgba(255, 255, 255, 0.75);
+    box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.08);
 }
 
-.metricValue {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.18rem;
-    font-weight: 700;
-    color: #bfdbfe;
-}
-
-.metricLabel {
-    color: rgba(226, 232, 240, 0.72);
-    font-size: 0.84rem;
-    line-height: 1.65;
-}
-
-.loginShell {
-    position: relative;
-    min-height: 100vh;
-    overflow: hidden;
-    padding: 2rem 0;
-}
-
-.loginAmbientGlowOne,
-.loginAmbientGlowTwo,
-.loginGrid {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-}
-
-.loginAmbientGlowOne {
-    background: radial-gradient(circle at 16% 22%, rgba(59, 130, 246, 0.22), transparent 26%);
-}
-
-.loginAmbientGlowTwo {
-    background: radial-gradient(circle at 84% 78%, rgba(14, 165, 233, 0.18), transparent 20%);
-}
-
-.loginGrid {
-    opacity: 0.16;
-    background-image:
-        linear-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(148, 163, 184, 0.12) 1px, transparent 1px);
-    background-size: 40px 40px;
-    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.95), transparent 94%);
-}
-
-.loginFrame {
-    position: relative;
-    z-index: 1;
-    width: min(1240px, calc(100% - 2rem));
-    min-height: calc(100vh - 4rem);
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1.12fr 0.88fr;
-}
-
-.loginHero {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 2rem;
-    height: 100%;
-}
-
-.loginBrandRow {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.loginBrandName {
-    color: #f8fbff;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.5rem;
+.brandName {
+    margin: 0;
+    color: var(--text);
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 1.4rem;
     font-weight: 700;
     letter-spacing: -0.04em;
 }
 
-.loginBrandTag {
-    color: rgba(148, 163, 184, 0.82);
-    font-size: 0.78rem;
+.brandTag {
+    margin: 0.2rem 0 0;
+    color: var(--text-soft);
+    font-size: 0.82rem;
     font-weight: 600;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
-.loginSignalStrip {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.85rem;
-    margin-top: 2rem;
-}
-
-.signalCard {
-    padding: 1rem 1.05rem;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(148, 163, 184, 0.14);
-}
-
-.signalLabel {
-    display: block;
-    margin-bottom: 0.35rem;
-    color: rgba(148, 163, 184, 0.72);
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-}
-
-.signalValue {
-    display: block;
-    color: #f8fbff;
-    font-size: 0.94rem;
-    font-weight: 600;
-    line-height: 1.5;
-}
-
-.loginPanel {
-    width: 100%;
-    max-width: 430px;
-}
-
-.loginPanelInner {
-    position: relative;
-    z-index: 1;
-}
-
+.heroBadge,
 .formEyebrow {
-    display: inline-block;
-    margin-bottom: 0.85rem;
-    color: var(--brand-strong);
-    font-size: 0.76rem;
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    background: var(--brand-soft);
+    color: var(--brand-dark);
+    font-size: 0.72rem;
     font-weight: 800;
     letter-spacing: 0.16em;
     text-transform: uppercase;
 }
 
-.authHeader {
-    color: var(--text-strong);
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(2rem, 3vw, 3rem);
+.heroBadge {
+    margin-bottom: 0.95rem;
+}
+
+.formEyebrow {
+    margin-bottom: 0.85rem;
+}
+
+.leftSideFeatures {
+    margin: 0 0 0.95rem;
+    color: #5b7bc6;
+    font-size: 0.78rem;
     font-weight: 700;
-    line-height: 1.02;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.authLeftText,
+.authHeader,
+.roomsTitle {
+    margin: 0;
+    color: var(--text);
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 700;
     letter-spacing: -0.05em;
+    text-wrap: balance;
+}
+
+.authLeftText {
+    max-width: 11ch;
+    font-size: clamp(2.7rem, 5vw, 4.5rem);
+    line-height: 0.98;
+    margin-bottom: 1rem;
+}
+
+.authHeader {
+    font-size: clamp(1.9rem, 3vw, 2.8rem);
+    line-height: 1.02;
     margin-bottom: 0.75rem;
 }
 
-.authSubHeader {
+.roomsTitle {
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    line-height: 1.05;
+    margin-bottom: 0.5rem;
+}
+
+.authLeftSubText,
+.authSubHeader,
+.roomsSubtitle,
+.formFooterNote {
+    margin: 0;
     color: var(--text-soft);
-    font-size: 0.98rem;
-    font-weight: 500;
-    line-height: 1.8;
-    max-width: 32rem;
+    font-size: 0.97rem;
+    line-height: 1.75;
+}
+
+.heroMetrics {
+    display: grid;
+    gap: 0.85rem;
+    margin-top: 1.8rem;
+}
+
+.metricCard {
+    padding: 1rem 1.05rem;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(37, 99, 235, 0.1);
+    border-radius: 18px;
+}
+
+.metricValue {
+    margin: 0 0 0.25rem;
+    color: var(--text);
+    font-size: 0.97rem;
+    font-weight: 700;
+}
+
+.metricLabel {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.formContainer,
+.joinRoom {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .formContainer {
-    width: 100%;
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: column;
+    margin-top: 1.8rem;
 }
 
 .inputContainer {
@@ -374,16 +215,15 @@
 
 .authInput {
     width: 100%;
-    padding: 0.98rem 1rem;
-    border-radius: 16px;
+    padding: 0.92rem 1rem;
     border: 1px solid rgba(148, 163, 184, 0.24);
-    background: rgba(255, 255, 255, 0.78);
-    color: var(--text-strong);
-    font-family: 'Manrope', sans-serif;
-    font-size: 0.96rem;
+    border-radius: 16px;
+    background: #ffffff;
+    color: var(--text);
+    font-family: "Manrope", sans-serif;
+    font-size: 0.95rem;
     font-weight: 600;
-    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-    backdrop-filter: blur(8px);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .authInput::placeholder {
@@ -393,77 +233,56 @@
 .authInput:focus {
     outline: none;
     border-color: var(--brand);
-    background: #ffffff;
-    box-shadow: 0 0 0 4px var(--brand-glow);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
 }
 
 .buttons {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.8rem;
-    margin-top: 1rem;
+    margin-top: 0.8rem;
 }
 
 .authButton,
 .secondaryAuthButton {
     width: 100%;
-    padding: 1rem 1.1rem;
+    min-height: 52px;
+    padding: 0.95rem 1rem;
     border-radius: 16px;
-    font-family: 'Manrope', sans-serif;
+    font-family: "Manrope", sans-serif;
     font-size: 0.95rem;
     font-weight: 700;
     cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease, border-color 0.15s ease;
 }
 
 .authButton {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    border: none;
+    gap: 0.45rem;
     color: #ffffff;
-    background: linear-gradient(135deg, #020617 0%, #1d4ed8 100%);
-    box-shadow: 0 18px 34px rgba(29, 78, 216, 0.28);
-}
-
-.authButton:hover {
-    transform: translateY(-1px);
-}
-
-.authButton:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+    border: none;
+    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+    box-shadow: 0 14px 28px rgba(37, 99, 235, 0.24);
 }
 
 .secondaryAuthButton {
-    border: 1px solid rgba(148, 163, 184, 0.24);
-    color: #0f172a;
-    background: rgba(255, 255, 255, 0.56);
-}
-
-.secondaryAuthButton:hover {
-    border-color: rgba(29, 78, 216, 0.38);
-    box-shadow: 0 12px 24px rgba(148, 163, 184, 0.18);
-}
-
-.formFooterNote {
-    color: var(--text-muted);
-    font-size: 0.83rem;
-    line-height: 1.65;
+    border: 1px solid var(--border-strong);
+    background: #ffffff;
+    color: var(--text);
 }
 
 .loginFooterRow {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
-    margin-top: 1.6rem;
-    padding-top: 1.3rem;
-    border-top: 1px solid rgba(148, 163, 184, 0.2);
+    margin-top: 1.4rem;
+    padding-top: 1.15rem;
+    border-top: 1px solid var(--border);
 }
 
 .loginInlineLink {
-    color: var(--brand-strong);
+    color: var(--brand-dark);
     text-decoration: none;
     font-size: 0.92rem;
     font-weight: 700;
@@ -473,7 +292,7 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    margin: 0.9rem 0;
+    margin: 1rem 0;
     color: var(--text-muted);
     font-size: 0.8rem;
     font-weight: 700;
@@ -481,127 +300,133 @@
 
 .orDivider hr {
     flex: 1;
-    border: none;
     height: 1px;
-    background: rgba(148, 163, 184, 0.24);
+    border: none;
+    background: var(--border);
 }
 
-.myRoomsContainer {
-    width: min(1240px, calc(100% - 2rem));
-    margin: 0 auto 2.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+.roomsLayout {
+    width: min(1120px, 100%);
+    min-height: calc(100vh - 3rem);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.roomsManagerCard,
+.roomsListCard {
+    padding: 2rem;
+}
+
+.roomsHeaderRow {
+    margin-bottom: 1rem;
 }
 
 .myRooms {
-    width: 100%;
-    max-width: 38rem;
-    background: var(--surface);
-    border: 1px solid var(--border-light);
-    border-radius: 22px;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
 }
 
 .myRoom {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 1.5rem;
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--border-light);
-}
-
-.myRoom:last-child {
-    border-bottom: none;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.05rem;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--surface-alt);
 }
 
 .myRoom p {
-    color: var(--text-strong);
-    font-size: 0.93rem;
+    margin: 0;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.roomMeta {
+    display: block;
+    margin-top: 0.2rem;
+    color: var(--text-soft);
+    font-size: 0.82rem;
     font-weight: 600;
 }
 
 .myRoom button {
+    min-width: 88px;
     border: none;
-    background: #020617;
+    border-radius: 12px;
+    background: #0f172a;
     color: #ffffff;
-    padding: 0.52rem 1rem;
-    border-radius: 10px;
-    font-family: 'Manrope', sans-serif;
-    font-size: 0.84rem;
+    padding: 0.75rem 0.95rem;
+    font-family: "Manrope", sans-serif;
+    font-size: 0.86rem;
     font-weight: 700;
     cursor: pointer;
 }
 
-@media (max-width: 960px) {
+.roomsEmpty {
+    padding: 1.2rem;
+    border: 1px dashed rgba(148, 163, 184, 0.4);
+    border-radius: 18px;
+    background: rgba(248, 250, 252, 0.8);
+}
+
+.roomsEmptyTitle {
+    margin: 0 0 0.3rem;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.roomsEmptyText {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+@media (max-width: 920px) {
     .authContainer,
-    .loginFrame {
+    .roomsLayout {
         grid-template-columns: 1fr;
-    }
-
-    .authContainer {
-        width: min(960px, calc(100% - 1rem));
-        padding: 1rem 0 2rem;
-    }
-
-    .authLeftSide,
-    .authRightSide {
-        border-radius: 28px;
-        border-right: 1px solid var(--border-dark);
-    }
-
-    .authLeftSide {
-        border-bottom: none;
-    }
-
-    .authRightSide {
-        border-left: 1px solid var(--border-dark);
-    }
-
-    .loginShell {
-        padding: 1rem 0;
-    }
-
-    .loginFrame {
-        width: 100%;
         min-height: auto;
     }
 
-    .loginSignalStrip,
-    .heroMetrics,
-    .buttons {
-        grid-template-columns: 1fr;
+    .themeContainer {
+        padding: 1rem;
+    }
+
+    .authContainer,
+    .roomsLayout {
+        width: 100%;
     }
 }
 
 @media (max-width: 640px) {
-    .authContainer {
-        width: calc(100% - 0.75rem);
-    }
-
     .authLeftSide,
-    .authRightSide {
-        padding: 1.4rem;
-        border-radius: 24px;
-    }
-
-    .heroLogoWrap {
-        width: 68px;
-        height: 68px;
-    }
-
-    .heroLogo {
-        width: 44px;
-        height: 44px;
+    .authRightSide,
+    .roomsManagerCard,
+    .roomsListCard {
+        padding: 1.35rem;
+        border-radius: 22px;
     }
 
     .authLeftText {
-        font-size: 2.5rem;
+        font-size: 2.4rem;
         max-width: 100%;
     }
 
-    .loginBrandRow {
+    .buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .myRoom {
+        flex-direction: column;
         align-items: flex-start;
     }
 }
