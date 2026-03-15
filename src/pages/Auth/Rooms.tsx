@@ -5,7 +5,6 @@ import styles from "./Login.module.css";
 import { PulseLoader } from "react-spinners";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../../components/Navbar/Navbar";
 import { checkAuth } from "../utils";
 
 const Rooms = () => {
@@ -193,7 +192,6 @@ const Rooms = () => {
 
     return (
         <div className={styles.themeContainer}>
-            <Navbar />
             <div className={styles.authContainer}>
                 <div className={styles.authLeftSide}>
                     <p className={styles.leftSideFeatures}>Create • Share • Track</p>

@@ -6,7 +6,6 @@ import MapComponent from "./MapComponent";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { calculateDistance, checkAuth } from "../../utils";
-import Navbar from "../../../components/Navbar/Navbar";
 import ReactTimeAgo from "react-time-ago";
 
 const LIVE_LOCATION_WINDOW_MS = 60 * 1000;
@@ -475,8 +474,6 @@ const AdminsDashboard = () => {
 
   return (
     <div className={styles.adminDashboardContainer}>
-      <Navbar />
-
       <div className={styles.dashboard}>
         <div className={styles.leftSideContainer}>
           <div className={styles.roomInformation}>

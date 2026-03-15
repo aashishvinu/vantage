@@ -4,7 +4,6 @@ import AppContext from "../../../contexts/appContext";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { checkAuth, convertTimestamp, getFormattedDate } from "../../utils";
-import Navbar from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
 import UserMiniMap from "./UserMiniMap";
 
@@ -290,7 +289,6 @@ const UsersDashboard = () => {
     return (
         <>
             <div className={styles.themeContainer}>
-                <Navbar />
                 <div className={styles.userDashboardContainer}>
                     <div className={styles.userProfileContainer}>
                         <div className={styles.userProfile}>
