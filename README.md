@@ -25,12 +25,14 @@ requests to the container on `127.0.0.1:8000`.
 ## Environment variables
 
 This app expects Vite environment variables at build time. On the VPS, those
-values are read from `docker.env` during `docker compose --env-file docker.env up -d --build`.
+values are read from `docker.env` and used by GitHub Actions while building the
+Docker image.
 
 ## GitHub Actions deployment
 
-This repository includes a workflow that syncs the project to your VPS and runs
-`docker compose up -d --build` whenever you push to `main` or `dev`.
+This repository includes a workflow that builds the Docker image in GitHub
+Actions, pushes it to GitHub Container Registry, then tells the VPS to pull the
+latest image and restart the container.
 
 Add these GitHub repository secrets before using it:
 
@@ -39,6 +41,8 @@ Add these GitHub repository secrets before using it:
 - `VPS_SSH_KEY`: the private SSH key for that user
 - `VPS_PORT`: optional SSH port, usually `22`
 - `VPS_APP_DIR`: the app directory on the server, for example `/home/aashishvinu/vantage`
+- `GHCR_USER`: the GitHub username that can read the package
+- `GHCR_PAT`: a GitHub personal access token with package read access
 
 Typical `VPS_APP_DIR` example:
 

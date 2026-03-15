@@ -2,13 +2,8 @@ version: "3.9"
 
 services:
   vantage:
-    build:
-      context: .
-      args:
-        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
-        VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
-        VITE_GOOGLE_MAPS_API_KEY: ${VITE_GOOGLE_MAPS_API_KEY}
-        VITE_RADAR_PUBLISHABLE_KEY: ${VITE_RADAR_PUBLISHABLE_KEY}
+    image: ${VANTAGE_IMAGE:-ghcr.io/aashishvinu/vantage:latest}
+    pull_policy: always
     container_name: vantage
     ports:
       - "127.0.0.1:8000:80"
