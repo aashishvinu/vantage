@@ -55,12 +55,13 @@ const AdminsDashboard = () => {
   const geofenceAlertChannelRef = useRef<any>(null);
   const geofenceStateChannelRef = useRef<any>(null);
   const memberMessageChannelRef = useRef<any>(null);
-  const previousOutsideUserIdsRef = useRef<string[]>([]);
+  const roomUserIdsRef = useRef<string[]>([]);
+  const warnedOutsideUserIdsRef = useRef<Set<string>>(new Set());
   const currentAdminId = JSON.parse(localStorage.getItem("userObject") || "{}")?.id || "";
 
   const updateGeofenceRadius = (value: number) => {
     const safeValue = Number.isNaN(value) ? 200 : value;
-    setGeofenceRadius(Math.min(2000, Math.max(50, safeValue)));
+    setGeofenceRadius(Math.min(5000, Math.max(50, safeValue)));
   };
 
   const updateAdminLocation = async (latitude: number, longitude: number) => {
@@ -152,6 +153,13 @@ const AdminsDashboard = () => {
 
     const userIds = memberData.map((member) => member.user_id);
     setRoomUserIds(userIds);
+    roomUserIdsRef.current = userIds;
+
+    if (!userIds.length) {
+      setUsers([]);
+      setUsersLocation([]);
+      return;
+    }
 
     await getUserLocation(userIds);
 
@@ -224,9 +232,14 @@ const AdminsDashboard = () => {
             const nextRow = payload.new as { user_id?: string } | null;
             const previousRow = payload.old as { user_id?: string } | null;
             const changedUserId = nextRow?.user_id ?? previousRow?.user_id;
-            if (!changedUserId || !roomUserIds.includes(changedUserId)) return;
+            if (
+              !changedUserId ||
+              !roomUserIdsRef.current.includes(changedUserId)
+            ) {
+              return;
+            }
 
-            await getUserLocation(roomUserIds);
+            await getUserLocation(roomUserIdsRef.current);
           }
         )
         .subscribe();
@@ -238,7 +251,7 @@ const AdminsDashboard = () => {
       if (memberSubscription) memberSubscription.unsubscribe();
       if (userLocationSubscription) userLocationSubscription.unsubscribe();
     };
-  }, [roomUserIds, room_code, supabase]);
+  }, [navigate, room_code, supabase]);
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
@@ -412,6 +425,7 @@ const AdminsDashboard = () => {
     );
 
   const outsideUsers = visibleUsersWithLocation.filter((entry) => entry.isOutside);
+  const memberCount = liveUsersLocation.length + 1;
 
   const handleSendMessage = () => {
     const trimmedMessage = memberMessage.trim();
@@ -449,13 +463,13 @@ const AdminsDashboard = () => {
   };
 
   useEffect(() => {
-    const currentOutsideUserIds = outsideUsers.map((entry) => entry.user.id);
-    const previousOutsideUserIds = previousOutsideUserIdsRef.current;
+    const currentOutsideUserIds = new Set(outsideUsers.map((entry) => entry.user.id));
 
     outsideUsers.forEach((entry) => {
-      if (previousOutsideUserIds.includes(entry.user.id)) return;
+      if (warnedOutsideUserIdsRef.current.has(entry.user.id)) return;
 
       toast.error(`${entry.user.name} is outside the geofence.`);
+      warnedOutsideUserIdsRef.current.add(entry.user.id);
 
       geofenceAlertChannelRef.current?.send({
         type: "broadcast",
@@ -469,8 +483,17 @@ const AdminsDashboard = () => {
       });
     });
 
-    previousOutsideUserIdsRef.current = currentOutsideUserIds;
-  }, [outsideUsers, room_code]);
+    Array.from(warnedOutsideUserIdsRef.current).forEach((userId) => {
+      if (currentOutsideUserIds.has(userId)) return;
+
+      const matchingEntry = visibleUsersWithLocation.find(
+        (entry) => entry.user.id === userId
+      );
+      if (matchingEntry && !matchingEntry.isOutside) {
+        warnedOutsideUserIdsRef.current.delete(userId);
+      }
+    });
+  }, [outsideUsers, room_code, visibleUsersWithLocation]);
 
   return (
     <div className={styles.adminDashboardContainer}>
@@ -483,7 +506,7 @@ const AdminsDashboard = () => {
             </div>
 
             <div className={styles.roomDetails}>
-              <p>{users.length} Members</p>
+              <p>{memberCount} Members</p>
             </div>
           </div>
 
@@ -521,7 +544,7 @@ const AdminsDashboard = () => {
               <input
                 type="range"
                 min={50}
-                max={2000}
+                max={5000}
                 step={50}
                 value={geofenceRadius}
                 onChange={(e) =>
@@ -541,7 +564,7 @@ const AdminsDashboard = () => {
                   id="geofence-radius-input"
                   type="number"
                   min={50}
-                  max={2000}
+                  max={5000}
                   step={50}
                   value={geofenceRadius}
                   onChange={(e) =>
@@ -617,7 +640,9 @@ const AdminsDashboard = () => {
                 return (
                   <div
                     key={user.id}
-                    className={styles.nearbyStudent}
+                    className={`${styles.nearbyStudent} ${
+                      isOutside ? styles.nearbyStudentOutside : ""
+                    }`}
                   >
                     <div>
                       <p>{user.name}</p>

@@ -7,6 +7,25 @@ import { checkAuth, convertTimestamp, getFormattedDate } from "../../utils";
 import Footer from "../../../components/Footer/Footer";
 import UserMiniMap from "./UserMiniMap";
 
+const getDistanceInMeters = (
+    latitude: number,
+    longitude: number,
+    centerLatitude: number,
+    centerLongitude: number
+) => {
+    const earthRadiusInMeters = 6371000;
+    const dLat = ((latitude - centerLatitude) * Math.PI) / 180;
+    const dLng = ((longitude - centerLongitude) * Math.PI) / 180;
+
+    const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos((centerLatitude * Math.PI) / 180) *
+            Math.cos((latitude * Math.PI) / 180) *
+            Math.sin(dLng / 2) ** 2;
+
+    return earthRadiusInMeters * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+};
+
 const UsersDashboard = () => {
     const { supabase } = useContext(AppContext);
     const [userData, setUserData] = useState<any>();
@@ -23,6 +42,7 @@ const UsersDashboard = () => {
     >([]);
     const userIdRef = useRef("");
     const adminUserIdRef = useRef("");
+    const hasShownOutsideToastRef = useRef(false);
 
     const { room_code } = useParams();
 
@@ -173,7 +193,10 @@ const UsersDashboard = () => {
                     return [nextNotification, ...currentNotifications].slice(0, 10);
                 });
 
-                toast.error(nextNotification.message);
+                if (!hasShownOutsideToastRef.current) {
+                    toast.error(nextNotification.message);
+                    hasShownOutsideToastRef.current = true;
+                }
             })
             .subscribe();
 
@@ -253,6 +276,35 @@ const UsersDashboard = () => {
         setGeofenceCenter(adminLocation);
     }, [adminLocation, geofenceCenter]);
 
+    const distanceFromGeofenceCenter =
+        latitude &&
+        longitude &&
+        geofenceCenter
+            ? getDistanceInMeters(
+                  latitude,
+                  longitude,
+                  geofenceCenter[0],
+                  geofenceCenter[1]
+              )
+            : null;
+
+    const isOutsideGeofence =
+        distanceFromGeofenceCenter !== null
+            ? distanceFromGeofenceCenter > geofenceRadius
+            : false;
+
+    useEffect(() => {
+        if (!isOutsideGeofence) {
+            hasShownOutsideToastRef.current = false;
+            return;
+        }
+
+        if (hasShownOutsideToastRef.current) return;
+
+        toast.error("You are outside the geofence. Please come back inside the fence.");
+        hasShownOutsideToastRef.current = true;
+    }, [isOutsideGeofence]);
+
     useEffect(() => {
         if (!supabase || !room_code || !adminUserIdRef.current) return;
 
@@ -327,6 +379,18 @@ const UsersDashboard = () => {
                                     {notifications[0].message}
                                 </div>
                             )}
+
+                            <div
+                                className={`${styles.geofenceStatus} ${
+                                    isOutsideGeofence
+                                        ? styles.geofenceStatusOutside
+                                        : styles.geofenceStatusInside
+                                }`}
+                            >
+                                {isOutsideGeofence
+                                    ? "Outside geofence"
+                                    : "Inside geofence"}
+                            </div>
 
                             <button
                                 onClick={() => updateLocation(true)}

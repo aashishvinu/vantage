@@ -203,6 +203,14 @@
     padding: 1rem 0;
 }
 
+.nearbyStudentOutside {
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    background-color: #fef2f2;
+    padding: 1rem 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
 .statusInside,
 .statusOutside {
     display: inline-block;
