@@ -12,8 +12,10 @@ dist/
 # dotenv environment variables
 .env
 .env.production
+.env.docker
 .env.*.local
 .env.local
+docker.env
 
 # macOS
 .DS_Store
