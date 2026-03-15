@@ -26,8 +26,8 @@ const GlobalWrapper = () => {
         <div>
           <h1 style={{ marginBottom: "12px" }}>App Configuration Missing</h1>
           <p style={{ maxWidth: "540px", lineHeight: 1.5 }}>
-            Set the required Vite environment variables in Vercel Project
-            Settings, then redeploy.
+            Set the required Vite environment variables in your server or build
+            environment, then rebuild and redeploy the app.
           </p>
           <p style={{ maxWidth: "540px", lineHeight: 1.5 }}>
             Missing: <code>{missingRequiredEnvVars.join(", ")}</code>

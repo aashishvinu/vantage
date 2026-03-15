@@ -1,30 +1,39 @@
-# React + TypeScript + Vite
+# Vantage
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Vantage is a React + TypeScript + Vite frontend.
 
-Currently, two official plugins are available:
+## Local development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+npm install
+npm run dev
+```
 
-## Expanding the ESLint configuration
+## Production build
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+```bash
+npm run build
+```
 
-- Configure the top-level `parserOptions` property like this:
+The production files are generated in `dist/`.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
+## VPS / Nginx deployment
+
+Deploy the contents of `dist/` to the server that serves `vantages.live`.
+
+If you are using Nginx for a single-page app, make sure unknown routes fall back
+to `index.html`.
+
+Example:
+
+```nginx
+location / {
+    try_files $uri $uri/ /index.html;
 }
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Environment variables
+
+This app expects Vite environment variables at build time. Make sure they are
+available in your shell, CI pipeline, or deploy script before running
+`npm run build`.
