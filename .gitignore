@@ -11,6 +11,7 @@ dist/
 
 # dotenv environment variables
 .env
+.env.production
 .env.*.local
 .env.local
 

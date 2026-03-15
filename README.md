@@ -19,21 +19,35 @@ The production files are generated in `dist/`.
 
 ## VPS / Nginx deployment
 
-Deploy the contents of `dist/` to the server that serves `vantages.live`.
-
-If you are using Nginx for a single-page app, make sure unknown routes fall back
-to `index.html`.
-
-Example:
-
-```nginx
-location / {
-    try_files $uri $uri/ /index.html;
-}
-```
+This project is set up to run in Docker on the VPS, with Nginx reverse proxying
+requests to the container on `127.0.0.1:8000`.
 
 ## Environment variables
 
 This app expects Vite environment variables at build time. Make sure they are
 available in your shell, CI pipeline, or deploy script before running
 `npm run build`.
+
+## GitHub Actions deployment
+
+This repository includes a workflow that syncs the project to your VPS and runs
+`docker compose up -d --build` whenever you push to `main` or `dev`.
+
+Add these GitHub repository secrets before using it:
+
+- `VPS_HOST`: your server IP or hostname
+- `VPS_USER`: the SSH user GitHub Actions should log in as
+- `VPS_SSH_KEY`: the private SSH key for that user
+- `VPS_PORT`: optional SSH port, usually `22`
+- `VPS_APP_DIR`: the app directory on the server, for example `/home/aashishvinu/vantage`
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+- `VITE_GOOGLE_MAPS_API_KEY`
+- `VITE_RADAR_PUBLISHABLE_KEY`
+
+Typical `VPS_APP_DIR` example:
+
+- `/home/aashishvinu/vantage`
+
+If you only want production deploys from one branch, update
+`.github/workflows/deploy.yml` and keep only that branch under `on.push.branches`.
