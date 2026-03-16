@@ -1,0 +1,27 @@
+<svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="24" y1="20" x2="132" y2="144" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8EC5FF"/>
+      <stop offset="1" stop-color="#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="shirt" x1="45" y1="92" x2="117" y2="139" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1D4ED8"/>
+      <stop offset="1" stop-color="#172554"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="57" y1="43" x2="102" y2="89" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFD7B8"/>
+      <stop offset="1" stop-color="#F1B487"/>
+    </linearGradient>
+  </defs>
+  <circle cx="80" cy="80" r="76" fill="url(#bg)"/>
+  <circle cx="80" cy="80" r="76" fill="black" fill-opacity="0.04"/>
+  <path d="M47 131.5C51.4 110.3 64.3 99.7 80.5 99.7C96.7 99.7 109.6 110.3 114 131.5C104.2 141.1 92.8 146 80 146C67.5 146 56.5 141.2 47 131.5Z" fill="url(#shirt)"/>
+  <path d="M61.5 101.5C66.5 98.7 72.8 97.1 80.5 97.1C88.2 97.1 94.6 98.7 99.5 101.5V111.3C99.5 121.8 91 130.3 80.5 130.3C70 130.3 61.5 121.8 61.5 111.3V101.5Z" fill="#FFD2B2"/>
+  <circle cx="80" cy="68.5" r="29.5" fill="url(#skin)"/>
+  <path d="M50.6 67.4C51.7 49.6 64.9 35 80.8 35C96.8 35 109.9 49.6 111 67.4C104.3 63.4 99.6 56.7 97.8 48.8C89.8 58.8 75.8 65.4 50.6 67.4Z" fill="#1E1B4B"/>
+  <ellipse cx="68.8" cy="71.2" rx="3.4" ry="4.1" fill="#1F2937"/>
+  <ellipse cx="91.2" cy="71.2" rx="3.4" ry="4.1" fill="#1F2937"/>
+  <path d="M72 83.6C77.1 88.7 84.9 88.7 90 83.6" stroke="#C2410C" stroke-width="3.8" stroke-linecap="round"/>
+  <circle cx="118" cy="48" r="13" fill="white" fill-opacity="0.24"/>
+  <circle cx="40" cy="114" r="10" fill="white" fill-opacity="0.18"/>
+</svg>

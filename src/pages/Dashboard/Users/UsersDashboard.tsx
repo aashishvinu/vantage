@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { checkAuth, convertTimestamp, getFormattedDate } from "../../utils";
 import Footer from "../../../components/Footer/Footer";
 import UserMiniMap from "./UserMiniMap";
+import avatar3d from "../../../assets/avatar-3d.svg";
 
 const getDistanceInMeters = (
     latitude: number,
@@ -344,7 +345,7 @@ const UsersDashboard = () => {
                 <div className={styles.userDashboardContainer}>
                     <div className={styles.userProfileContainer}>
                         <div className={styles.userProfile}>
-                            <img src="https://via.placeholder.com/75" alt="user" />
+                            <img src={avatar3d} alt="3D avatar" className={styles.profileAvatar} />
                             {userData && (
                                 <div className={styles.userProileTexts}>
                                     <p className={styles.userName}>{userData?.full_name}</p>
@@ -358,14 +359,14 @@ const UsersDashboard = () => {
                         {adminData && (
                             <div
                                 className={styles.adminContainer}
-                                style={{
-                                    textAlign: "right",
-                                }}
                             >
-                                <p className={styles.adminName}>Admin Info</p>
-                                <p className={styles.adminHeading}>{adminData.full_name}</p>
-                                <p className={styles.userEmail}>{adminData.email}</p>
-                                <p className={styles.userEmail}>{adminData.phone_number}</p>
+                                <img src={avatar3d} alt="3D avatar" className={styles.profileAvatar} />
+                                <div className={styles.adminDetails}>
+                                    <p className={styles.adminName}>Admin Info</p>
+                                    <p className={styles.adminHeading}>{adminData.full_name}</p>
+                                    <p className={styles.userEmail}>{adminData.email}</p>
+                                    <p className={styles.userEmail}>{adminData.phone_number}</p>
+                                </div>
                             </div>
                         )}
                     </div>

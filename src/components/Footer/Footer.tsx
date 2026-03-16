@@ -4,8 +4,7 @@ const Footer = () => {
     return (
         <div className={styles.footerContainer}>
             <div className={styles.footerTexts}>
-               
-                <p className={styles.footerSubText}>© 2024 Vantage. All rights reserved.</p>
+                <p className={styles.footerSubText}>(c) 2026 Vantage. All rights reserved.</p>
             </div>
         </div>
     );
