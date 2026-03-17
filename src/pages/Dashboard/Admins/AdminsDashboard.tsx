@@ -57,6 +57,7 @@ const AdminsDashboard = () => {
   const memberMessageChannelRef = useRef<any>(null);
   const roomUserIdsRef = useRef<string[]>([]);
   const warnedOutsideUserIdsRef = useRef<Set<string>>(new Set());
+  const bestAccuracyRef = useRef<number | null>(null);
   const currentAdminId = JSON.parse(localStorage.getItem("userObject") || "{}")?.id || "";
 
   const updateGeofenceRadius = (value: number) => {
@@ -97,6 +98,24 @@ const AdminsDashboard = () => {
 
     const watchId = navigator.geolocation.watchPosition(
       (pos) => {
+        const nextAccuracy = pos.coords.accuracy;
+        const bestAccuracy = bestAccuracyRef.current;
+        const isClearlyWorseReading =
+          typeof nextAccuracy === "number" &&
+          typeof bestAccuracy === "number" &&
+          nextAccuracy > Math.max(bestAccuracy * 3, 1000);
+
+        if (isClearlyWorseReading) {
+          return;
+        }
+
+        bestAccuracyRef.current =
+          typeof nextAccuracy === "number"
+            ? bestAccuracy === null
+              ? nextAccuracy
+              : Math.min(bestAccuracy, nextAccuracy)
+            : bestAccuracy;
+
         const { latitude, longitude } = pos.coords;
         setPosition([latitude, longitude]);
         setGeofenceCenter((currentCenter) =>
@@ -109,7 +128,8 @@ const AdminsDashboard = () => {
       },
       {
         enableHighAccuracy: true,
-        maximumAge: 10000,
+        maximumAge: 0,
+        timeout: 10000,
       }
     );
 
@@ -426,6 +446,9 @@ const AdminsDashboard = () => {
 
   const outsideUsers = visibleUsersWithLocation.filter((entry) => entry.isOutside);
   const memberCount = liveUsersLocation.length + 1;
+  const selectedMember = visibleUsersWithLocation.find(
+    (entry) => entry.user.id === selectedMemberId
+  );
 
   const handleSendMessage = () => {
     const trimmedMessage = memberMessage.trim();
@@ -433,10 +456,6 @@ const AdminsDashboard = () => {
       toast.error("Select a member and enter a message.");
       return;
     }
-
-    const selectedMember = visibleUsersWithLocation.find(
-      (entry) => entry.user.id === selectedMemberId
-    );
 
     memberMessageChannelRef.current?.send({
       type: "broadcast",
@@ -461,6 +480,19 @@ const AdminsDashboard = () => {
     getUserLocation(userIds);
     toast.success("Data refreshed");
   };
+
+  useEffect(() => {
+    if (!selectedMemberId) return;
+
+    const isSelectedMemberVisible = visibleUsersWithLocation.some(
+      (entry) => entry.user.id === selectedMemberId
+    );
+
+    if (!isSelectedMemberVisible) {
+      setSelectedMemberId("");
+      setMemberMessage("");
+    }
+  }, [selectedMemberId, visibleUsersWithLocation]);
 
   useEffect(() => {
     const currentOutsideUserIds = new Set(outsideUsers.map((entry) => entry.user.id));
@@ -496,73 +528,102 @@ const AdminsDashboard = () => {
   }, [outsideUsers, room_code, visibleUsersWithLocation]);
 
   return (
-    <div className={styles.adminDashboardContainer}>
-      <div className={styles.dashboard}>
-        <div className={styles.leftSideContainer}>
-          <div className={styles.roomInformation}>
-            <div className={styles.roomHeading}>
-              <p className={styles.roomName}>Room Name</p>
-              <p className={styles.roomCode}>{room_code}</p>
+    <div className={styles.themeContainer}>
+      <div className={styles.adminDashboardContainer}>
+        <section className={styles.heroCard}>
+          <div>
+            <div className={styles.brandRow}>
+              <img src="/logo_no_bg.png" alt="Vantage logo" className={styles.brandLogo} />
+              <div>
+                <p className={styles.brandName}>Vantage</p>
+                <p className={styles.brandTag}>Admin control room</p>
+              </div>
             </div>
 
-            <div className={styles.roomDetails}>
-              <p>{memberCount} Members</p>
+            <div className={styles.heroEyebrow}>Live oversight</div>
+            <h1 className={styles.heroTitle}>Manage the room without losing the visual clarity.</h1>
+            <p className={styles.heroSubtitle}>
+              Keep geofence control, member presence, and live location updates in one dashboard that matches the rest of the product.
+            </p>
+
+            <div className={styles.heroMetrics}>
+              <div className={styles.metricCard}>
+                <p className={styles.metricValue}>{memberCount}</p>
+                <p className={styles.statLabel}>Active members tracked right now.</p>
+              </div>
+              <div className={styles.metricCard}>
+                <p className={styles.metricValue}>{geofenceRadius} m</p>
+                <p className={styles.statLabel}>Current geofence radius shared to participants.</p>
+              </div>
+              <div className={styles.metricCard}>
+                <p className={styles.metricValue}>{outsideUsers.length}</p>
+                <p className={styles.statLabel}>Members currently outside the fence.</p>
+              </div>
             </div>
           </div>
 
-          <div className={styles.nearbyStudentContainer}>
-            <div className={styles.nearbyHeading}>
+          <div className={styles.roomInformation}>
+            <div className={styles.roomHeading}>
               <div>
-                <p className={styles.nearByStudents}>Nearby Members</p>
-                <p className={styles.nearBySubText}>
-                  list of members near you
-                </p>
+                <p className={styles.roomCodeLabel}>Room overview</p>
+                <p className={styles.roomName}>Room {room_code}</p>
+                <p className={styles.roomCode}>Realtime admin dashboard</p>
               </div>
-
-              <button
-                className={styles.refreshButton}
-                onClick={handleRefresh}
-              >
-                Refresh
-              </button>
             </div>
 
-            <input
-              type="text"
-              placeholder="Search"
-              className={styles.searchInput}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+            <div className={styles.roomDetails}>
+              <div className={styles.roomDetailBlock}>
+                <p className={styles.roomDetailHeading}>Members online</p>
+                <p className={styles.roomDetailValue}>{liveUsersLocation.length}</p>
+              </div>
+              <div className={styles.roomDetailBlock}>
+                <p className={styles.roomDetailHeading}>Admin location</p>
+                <p className={styles.roomDetailValue}>{position ? "Live" : "Waiting"}</p>
+              </div>
+              <div className={styles.roomDetailBlock}>
+                <p className={styles.roomDetailHeading}>Fence center</p>
+                <p className={styles.roomDetailValue}>{geofenceCenter ? "Synced" : "Not set"}</p>
+              </div>
+            </div>
+          </div>
+        </section>
 
-            <div className={styles.geofenceControlContainer}>
-              <div className={styles.geofenceControlHeader}>
-                <p className={styles.geofenceTitle}>Geofence Radius</p>
-                <p className={styles.geofenceValue}>{geofenceRadius} m</p>
+        <div className={styles.dashboard}>
+          <div className={styles.leftSideContainer}>
+            <section className={styles.controlCard}>
+              <div className={styles.sectionHeader}>
+                <div>
+                  <div className={styles.sectionEyebrow}>Member panel</div>
+                  <h2 className={styles.sectionTitle}>Nearby members</h2>
+                  <p className={styles.sectionSubtitle}>
+                    Search live members, adjust the geofence, and message anyone in the room.
+                  </p>
+                </div>
+
+                <button
+                  className={styles.refreshButton}
+                  onClick={handleRefresh}
+                >
+                  Refresh
+                </button>
               </div>
 
               <input
-                type="range"
-                min={50}
-                max={5000}
-                step={50}
-                value={geofenceRadius}
-                onChange={(e) =>
-                  updateGeofenceRadius(Number(e.target.value))
-                }
-                className={styles.geofenceSlider}
+                type="text"
+                placeholder="Search members"
+                className={styles.searchInput}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
 
-              <div className={styles.geofenceInputRow}>
-                <label
-                  htmlFor="geofence-radius-input"
-                  className={styles.geofenceInputLabel}
-                >
-                  Radius (meters)
-                </label>
+              <div className={styles.geofenceControlContainer}>
+                <div className={styles.geofenceControlHeader}>
+                  <p className={styles.geofenceTitle}>Geofence radius</p>
+                  <p className={styles.geofenceValue}>{geofenceRadius} m</p>
+                </div>
+
                 <input
-                  id="geofence-radius-input"
-                  type="number"
+                  type="range"
                   min={50}
                   max={5000}
                   step={50}
@@ -570,122 +631,175 @@ const AdminsDashboard = () => {
                   onChange={(e) =>
                     updateGeofenceRadius(Number(e.target.value))
                   }
-                  className={styles.geofenceNumberInput}
+                  className={styles.geofenceSlider}
                 />
+
+                <div className={styles.geofenceInputRow}>
+                  <label
+                    htmlFor="geofence-radius-input"
+                    className={styles.geofenceInputLabel}
+                  >
+                    Radius in meters
+                  </label>
+                  <input
+                    id="geofence-radius-input"
+                    type="number"
+                    min={50}
+                    max={5000}
+                    step={50}
+                    value={geofenceRadius}
+                    onChange={(e) =>
+                      updateGeofenceRadius(Number(e.target.value))
+                    }
+                    className={styles.geofenceNumberInput}
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  className={styles.geofenceResetButton}
+                  onClick={() => {
+                    if (!position) return;
+                    setGeofenceCenter(position);
+                  }}
+                  disabled={!position}
+                >
+                  Set geofence to my current location
+                </button>
               </div>
 
-              <button
-                type="button"
-                className={styles.geofenceResetButton}
-                onClick={() => {
-                  if (!position) return;
-                  setGeofenceCenter(position);
-                }}
-                disabled={!position}
-              >
-                Set geofence to my current location
-              </button>
-            </div>
-
-            <div className={styles.messageComposer}>
-              <p className={styles.messageComposerTitle}>Send Message</p>
-              <select
-                className={styles.memberSelect}
-                value={selectedMemberId}
-                onChange={(e) => setSelectedMemberId(e.target.value)}
-              >
-                <option value="">Select a member</option>
-                {visibleUsersWithLocation.map(({ user }) => (
-                  <option key={user.id} value={user.id}>
-                    {user.name}
-                  </option>
-                ))}
-              </select>
-              <textarea
-                className={styles.memberMessageInput}
-                placeholder="Send a note to this member..."
-                value={memberMessage}
-                onChange={(e) => setMemberMessage(e.target.value)}
-                rows={3}
-              />
-              <button
-                type="button"
-                className={styles.sendMessageButton}
-                onClick={handleSendMessage}
-              >
-                Send
-              </button>
-            </div>
-
-            {outsideUsers.length > 0 && (
-              <div className={styles.geofenceAlertPanel}>
-                <p className={styles.geofenceAlertTitle}>
-                  {outsideUsers.length} member
-                  {outsideUsers.length > 1 ? "s are" : " is"} outside the geofence
+              <div className={styles.messageComposer}>
+                <p className={styles.messageComposerTitle}>Send a message</p>
+                <p className={styles.memberSelectHint}>
+                  {selectedMember
+                    ? `Messaging ${selectedMember.user.name}`
+                    : "Select a member card below to start writing."}
                 </p>
-                {outsideUsers.map((entry) => (
-                  <p
-                    key={entry.user.id}
-                    className={styles.geofenceAlertItem}
-                  >
-                    {entry.user.name} is {formatDistance(entry.distanceFromGeofenceCenter || 0)}
-                    from the geofence center
-                  </p>
-                ))}
+                <textarea
+                  className={styles.memberMessageInput}
+                  placeholder={
+                    selectedMember
+                      ? `Send a note to ${selectedMember.user.name}...`
+                      : "Select a member card below first..."
+                  }
+                  value={memberMessage}
+                  onChange={(e) => setMemberMessage(e.target.value)}
+                  rows={3}
+                  disabled={!selectedMember}
+                />
+                <button
+                  type="button"
+                  className={styles.sendMessageButton}
+                  onClick={handleSendMessage}
+                  disabled={!selectedMember}
+                >
+                  Send message
+                </button>
               </div>
-            )}
 
-            <div className={styles.nearbyStudentList}>
-              {visibleUsersWithLocation.map(({ user, location, distanceFromAdmin, isOutside }) => {
-                return (
-                  <div
-                    key={user.id}
-                    className={`${styles.nearbyStudent} ${
-                      isOutside ? styles.nearbyStudentOutside : ""
-                    }`}
-                  >
-                    <div>
-                      <p>{user.name}</p>
-                      <p>{user.email}</p>
-                      <p>{user.phone}</p>
-                      <p
-                        className={
-                          isOutside ? styles.statusOutside : styles.statusInside
-                        }
-                      >
-                        {isOutside ? "Outside geofence" : "Inside geofence"}
-                      </p>
-                    </div>
+              {outsideUsers.length > 0 && (
+                <div className={styles.geofenceAlertPanel}>
+                  <p className={styles.geofenceAlertTitle}>
+                    {outsideUsers.length} member
+                    {outsideUsers.length > 1 ? "s are" : " is"} outside the geofence
+                  </p>
+                  {outsideUsers.map((entry) => (
+                    <p
+                      key={entry.user.id}
+                      className={styles.geofenceAlertItem}
+                    >
+                      {entry.user.name} is {formatDistance(entry.distanceFromGeofenceCenter || 0)}
+                      {" "}from the geofence center.
+                    </p>
+                  ))}
+                </div>
+              )}
 
-                    {position && (
-                      <div>
-                        <p>
-                          <ReactTimeAgo
-                            date={location.updated_at}
-                            locale="en-US"
-                          />
-                        </p>
+              <div className={styles.nearbyStudentList}>
+                {visibleUsersWithLocation.length > 0 ? visibleUsersWithLocation.map(({ user, location, distanceFromAdmin, isOutside }) => {
+                  return (
+                    <button
+                      type="button"
+                      key={user.id}
+                      className={`${styles.nearbyStudent} ${
+                        isOutside ? styles.nearbyStudentOutside : ""
+                      } ${
+                        selectedMemberId === user.id ? styles.nearbyStudentSelected : ""
+                      }`}
+                      onClick={() => setSelectedMemberId(user.id)}
+                    >
+                      <div className={styles.memberIdentity}>
+                        <div className={styles.userImageContainer}>
+                          <p className={styles.userImage}>
+                            {user.name?.slice(0, 1)?.toUpperCase() || "M"}
+                          </p>
+                        </div>
 
-                        <p>
-                          {formatDistance(distanceFromAdmin || 0)}
-                        </p>
+                        <div>
+                          <p className={styles.memberName}>{user.name}</p>
+                          <p className={styles.memberEmail}>{user.email}</p>
+                          <p className={styles.memberPhone}>{user.phone}</p>
+                          <div className={styles.memberStatusRow}>
+                            <p
+                              className={
+                                isOutside ? styles.statusOutside : styles.statusInside
+                              }
+                            >
+                              {isOutside ? "Outside geofence" : "Inside geofence"}
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
 
-        {/* GOOGLE MAP */}
-        <div className={styles.mapContainer}>
-          <MapComponent
-            usersLocation={formattedUsersLocation}
-            position={position}
-            geofenceCenter={geofenceCenter}
-            geofenceRadius={geofenceRadius}
-          />
+                      {position && (
+                        <div className={styles.studentLocationData}>
+                          <p className={styles.studentLocation}>
+                            <ReactTimeAgo
+                              date={location.updated_at}
+                              locale="en-US"
+                            />
+                          </p>
+
+                          <p className={styles.studentLocationValue}>
+                            {formatDistance(distanceFromAdmin || 0)}
+                          </p>
+                          <p className={styles.memberMeta}>from you</p>
+                        </div>
+                      )}
+                    </button>
+                  );
+                }) : (
+                  <div className={styles.emptyState}>
+                    <p className={styles.emptyStateTitle}>No live members found</p>
+                    <p className={styles.emptyStateText}>
+                      Members appear here once their live location is available and matches your search.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </section>
+          </div>
+
+          <section className={styles.mapCard}>
+            <div className={styles.mapCardHeader}>
+              <div>
+                <div className={styles.sectionEyebrow}>Live map</div>
+                <h2 className={styles.sectionTitle}>Spatial view of your room</h2>
+                <p className={styles.sectionSubtitle}>
+                  Satellite map with the admin position, participant locations, and the current geofence.
+                </p>
+              </div>
+            </div>
+
+            <div className={styles.mapContainer}>
+              <MapComponent
+                usersLocation={formattedUsersLocation}
+                position={position}
+                geofenceCenter={geofenceCenter}
+                geofenceRadius={geofenceRadius}
+              />
+            </div>
+          </section>
         </div>
       </div>
     </div>

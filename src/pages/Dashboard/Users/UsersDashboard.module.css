@@ -1,268 +1,457 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --bg-base: #f6f8fc;
+    --bg-tint: #eef4ff;
+    --surface: #ffffff;
+    --surface-alt: #f8fbff;
+    --border: rgba(15, 23, 42, 0.08);
+    --border-strong: rgba(15, 23, 42, 0.14);
+    --text: #0f172a;
+    --text-soft: #526076;
+    --text-muted: #8a96a8;
+    --brand: #2563eb;
+    --brand-dark: #173ea6;
+    --brand-soft: rgba(37, 99, 235, 0.1);
+    --success-soft: rgba(34, 197, 94, 0.14);
+    --success-text: #166534;
+    --danger-soft: rgba(239, 68, 68, 0.14);
+    --danger-text: #b91c1c;
+    --info-soft: rgba(59, 130, 246, 0.12);
+    --info-text: #1d4ed8;
+    --shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.08);
+    --shadow-md: 0 12px 30px rgba(15, 23, 42, 0.06);
+}
+
 .themeContainer {
-  background-color: #f5f5f5;
-  padding: 2rem;
+    min-height: 100vh;
+    padding: 1.5rem;
+    font-family: "Manrope", sans-serif;
+    background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 24%),
+        linear-gradient(180deg, var(--bg-base) 0%, #f3f6fb 100%);
 }
 
 .userDashboardContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+    width: min(1180px, 100%);
+    margin: 0 auto;
+}
 
-  max-width: 90vw;
-  display: block;
-  margin: auto;
-  min-height: 81vh;
+.heroCard,
+.surfaceCard,
+.notificationCard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    box-shadow: var(--shadow-lg);
+}
 
-  margin-top: 9vh;
+.heroCard {
+    display: grid;
+    grid-template-columns: minmax(0, 1.12fr) minmax(280px, 0.88fr);
+    gap: 1.5rem;
+    padding: 2rem;
+    background: linear-gradient(180deg, var(--surface-alt) 0%, #edf4ff 100%);
+}
 
-  font-family: "DM Sans", sans-serif;
+.brandRow {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.brandLogo {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    border-radius: 18px;
+    padding: 0.45rem;
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.08);
+}
+
+.brandName {
+    margin: 0;
+    color: var(--text);
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+}
+
+.brandTag {
+    margin: 0.2rem 0 0;
+    color: var(--text-soft);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.heroEyebrow,
+.cardEyebrow,
+.identityTag {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.heroEyebrow,
+.cardEyebrow {
+    background: var(--brand-soft);
+    color: var(--brand-dark);
+}
+
+.heroEyebrow {
+    margin-bottom: 0.9rem;
+}
+
+.heroTitle,
+.cardTitle,
+.userName,
+.adminHeading {
+    margin: 0;
+    color: var(--text);
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+}
+
+.heroTitle {
+    max-width: 12ch;
+    font-size: clamp(2.1rem, 4vw, 3.5rem);
+    line-height: 0.98;
+}
+
+.heroSubtitle,
+.cardSubtitle,
+.metaText,
+.userEmail,
+.userPhone,
+.adminName,
+.lastUpdated,
+.notificationTime {
+    margin: 0;
+    color: var(--text-soft);
+    line-height: 1.65;
+}
+
+.heroSubtitle {
+    max-width: 58ch;
+    margin-top: 0.9rem;
+    font-size: 0.97rem;
+}
+
+.heroStats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+    margin-top: 1.5rem;
+}
+
+.statCard {
+    padding: 1rem 1.05rem;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(37, 99, 235, 0.1);
+    border-radius: 18px;
+}
+
+.statValue {
+    margin: 0 0 0.25rem;
+    color: var(--text);
+    font-size: 1.08rem;
+    font-weight: 800;
+}
+
+.metaText {
+    font-size: 0.88rem;
 }
 
 .userProfileContainer {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-
-  background-color: #fff;
-  border-radius: 10px;
-
-  padding: 2rem;
-  margin-bottom: 1rem;
+    display: grid;
+    gap: 1rem;
 }
 
-.userProfile {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  column-gap: 1rem;
+.profileCard {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.2rem;
+    border-radius: 22px;
+    border: 1px solid rgba(37, 99, 235, 0.1);
+    background: rgba(255, 255, 255, 0.72);
 }
 
 .profileAvatar {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.18);
-  background: linear-gradient(180deg, #eff6ff 0%, #dbeafe 100%);
+    width: 84px;
+    height: 84px;
+    border-radius: 24px;
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow: 0 14px 30px rgba(37, 99, 235, 0.18);
+    background: linear-gradient(180deg, #eff6ff 0%, #dbeafe 100%);
 }
 
-.userName {
-  font-size: 1.5rem;
-  font-weight: 500;
-}
-
-.userEmail {
-  font-size: 1rem;
-  font-weight: 400;
-  color: #6b7280;
-}
-
-.userPhone {
-  font-size: 1rem;
-  font-weight: 400;
-  color: #6b7280;
-}
-
-.adminHeading {
-  font-size: 1.5rem;
-  font-weight: 500;
-}
-
-.adminContainer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 1rem;
-  text-align: right;
-}
-
+.userProileTexts,
 .adminDetails {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+    display: flex;
+    flex-direction: column;
+    gap: 0.12rem;
+}
+
+.identityTag {
+    margin-bottom: 0.5rem;
+    background: rgba(15, 23, 42, 0.06);
+    color: var(--text-soft);
+}
+
+.userName,
+.adminHeading {
+    font-size: 1.5rem;
+    line-height: 1.04;
+}
+
+.userEmail,
+.userPhone,
+.adminName {
+    font-size: 0.95rem;
 }
 
 .adminName {
-  font-size: 1rem;
-  font-weight: 400;
-  color: #6b7280;
+    font-weight: 700;
 }
 
-.adminEmail {
-  font-size: 1rem;
-  font-weight: 400;
-  color: #6b7280;
+.mainGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+    gap: 1.5rem;
+    margin-top: 1.5rem;
 }
 
-.userLocationContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  background-color: #f9fafb;
-  border-radius: 10px;
-
-  padding: 3rem 0;
-
-  margin-bottom: 1rem;
+.stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-.userMiniMapCard {
-  width: min(720px, calc(100% - 4rem));
-  margin-top: 2rem;
-  padding: 1rem;
-  border-radius: 12px;
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb;
-  text-align: left;
+.surfaceCard,
+.notificationCard {
+    padding: 1.4rem;
 }
 
-.userMiniMapHeading {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #1f2937;
+.cardHeader {
+    margin-bottom: 1rem;
 }
 
-.userMiniMapSubtext {
-  font-size: 0.9rem;
-  color: #6b7280;
-  margin-top: 0.2rem;
-  margin-bottom: 0.85rem;
+.cardEyebrow {
+    margin-bottom: 0.75rem;
 }
 
-.userMiniMap {
-  overflow: hidden;
-  border-radius: 10px;
+.cardTitle {
+    font-size: 1.55rem;
+    line-height: 1.08;
+    margin-bottom: 0.35rem;
 }
 
-.userLocation {
-  text-align: center;
+.cardSubtitle {
+    font-size: 0.92rem;
+}
+
+.statusPanel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .lastUpdated {
-  font-size: 0.9rem;
-  margin-bottom: 2rem;
-  color: #6b7280;
-}
-
-.locationHeading {
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: #1f2937;
-}
-
-.updateLocationButton {
-  background-color: #2563eb;
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 1rem;
+    font-size: 0.9rem;
 }
 
 .warningBanner {
-  margin-top: 1rem;
-  padding: 0.85rem 1rem;
-  border: 1px solid #fecaca;
-  border-radius: 8px;
-  background-color: #fef2f2;
-  color: #991b1b;
-  font-size: 0.95rem;
-  font-weight: 600;
+    padding: 0.95rem 1rem;
+    border: 1px solid rgba(239, 68, 68, 0.18);
+    border-radius: 18px;
+    background: rgba(254, 242, 242, 0.94);
+    color: var(--danger-text);
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.statsRow {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.smallStat {
+    padding: 0.95rem 1rem;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background: var(--surface-alt);
+}
+
+.smallStatLabel {
+    margin: 0 0 0.28rem;
+    color: var(--text-soft);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.smallStatValue {
+    margin: 0;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 800;
 }
 
 .geofenceStatus {
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 0.4rem 0.8rem;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 800;
 }
 
 .geofenceStatusInside {
-  background-color: #dcfce7;
-  color: #166534;
+    background: var(--success-soft);
+    color: var(--success-text);
 }
 
 .geofenceStatusOutside {
-  background-color: #fee2e2;
-  color: #b91c1c;
+    background: var(--danger-soft);
+    color: var(--danger-text);
+}
+
+.updateLocationButton {
+    min-height: 50px;
+    padding: 0.95rem 1rem;
+    border-radius: 16px;
+    border: none;
+    color: #ffffff;
+    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+    box-shadow: 0 14px 28px rgba(37, 99, 235, 0.24);
+    font-family: "Manrope", sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.mapCard {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.mapMetaBar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.mapMetaChip {
+    padding: 0.55rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.06);
+    color: var(--text-soft);
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.userMiniMapCard {
+    overflow: hidden;
+    border-radius: 22px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    background: #ffffff;
 }
 
 .notificationsContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  width: calc(100% - 1rem);
-
-  margin-bottom: 1rem;
-}
-
-.notificationsHeading {
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: #1f2937;
+    margin-top: 1.5rem;
 }
 
 .notifications {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
 }
 
 .notification {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin: 1rem;
-  padding: 1rem;
-  margin: 0.5rem 0;
-  border-radius: 5px;
-  background-color: #f9fafb;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background: var(--surface-alt);
 }
 
 .warningNotification {
-  border: 1px solid #fecaca;
-  background-color: #fef2f2;
+    border-color: rgba(239, 68, 68, 0.18);
+    background: rgba(254, 242, 242, 0.94);
 }
 
 .infoNotification {
-  border: 1px solid #bfdbfe;
-  background-color: #eff6ff;
+    border-color: rgba(59, 130, 246, 0.14);
+    background: rgba(239, 246, 255, 0.94);
 }
 
 .notificationText {
-  font-size: 0.95rem;
-  color: #1f2937;
+    margin: 0;
+    color: var(--text);
+    font-size: 0.94rem;
+    font-weight: 700;
+    line-height: 1.6;
 }
 
 .notificationTime {
-  font-size: 0.8rem;
-  color: #6b7280;
+    font-size: 0.82rem;
+    white-space: nowrap;
 }
 
-@media screen and (max-width: 768px) {
-  .adminContainer {
-    justify-content: flex-start;
-    text-align: left;
-  }
+@media (max-width: 1080px) {
+    .heroCard,
+    .mainGrid {
+        grid-template-columns: 1fr;
+    }
+}
 
-  .adminDetails {
-    align-items: flex-start;
-  }
+@media (max-width: 720px) {
+    .themeContainer {
+        padding: 1rem;
+    }
+
+    .heroCard,
+    .surfaceCard,
+    .notificationCard {
+        border-radius: 22px;
+    }
+
+    .heroCard,
+    .surfaceCard,
+    .notificationCard {
+        padding: 1.25rem;
+    }
+
+    .heroStats {
+        grid-template-columns: 1fr;
+    }
+
+    .profileCard,
+    .notification {
+        flex-direction: column;
+    }
+
+    .notificationTime {
+        white-space: normal;
+    }
 }

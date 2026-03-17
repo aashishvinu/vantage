@@ -1,12 +1,22 @@
 .footerContainer {
-    background-color: #f2f2f2;
-    padding: 0 2rem ;
+    padding: 0 1.5rem 1.5rem;
+    font-family: "Manrope", sans-serif;
+    background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 24%),
+        linear-gradient(180deg, #f6f8fc 0%, #f3f6fb 100%);
 }
 
 .footerTexts {
+    width: min(1180px, 100%);
+    margin: 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
 }
 
 .footerText {
@@ -15,7 +25,8 @@
 }
 
 .footerSubText {
-    font-size: 14px;
-    color: #888888;
+    margin: 0;
+    font-size: 0.9rem;
+    color: #526076;
     text-align: center;
 }

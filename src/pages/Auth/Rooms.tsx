@@ -6,6 +6,31 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { checkAuth } from "../utils";
 
+const getFreshCoordinates = () =>
+    new Promise<{ latitude: number; longitude: number }>((resolve, reject) => {
+        if (!navigator.geolocation) {
+            reject(new Error("Geolocation is not supported by this browser."));
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                resolve({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                });
+            },
+            (error) => {
+                reject(error);
+            },
+            {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 10000,
+            }
+        );
+    });
+
 const Rooms = () => {
     const { supabase } = useContext(AppContext);
     const [roomCode, setRoomCode] = useState("");
@@ -90,24 +115,28 @@ const Rooms = () => {
         }
     };
 
-    const updateLocation = async () => {
+    const updateLocation = async (nextCoordinates?: { latitude: number; longitude: number }) => {
         if (!supabase) return;
 
         const userId = JSON.parse(localStorage.getItem("userObject")!).id;
-        const latitude = coordinates.latitude;
-        const longitude = coordinates.longitude;
+        const latitude = nextCoordinates?.latitude ?? coordinates.latitude;
+        const longitude = nextCoordinates?.longitude ?? coordinates.longitude;
         const userData = JSON.parse(localStorage.getItem("userObject")!);
 
         const { error } = await supabase
             .from("user_location")
-            .update({
-                user_id: userId,
-                latitude,
-                longitude,
-                email: userData.email,
-                updated_at: new Date().toISOString(),
-            })
-            .eq("user_id", userId);
+            .upsert(
+                {
+                    user_id: userId,
+                    latitude,
+                    longitude,
+                    email: userData.email,
+                    updated_at: new Date().toISOString(),
+                },
+                {
+                    onConflict: "user_id",
+                }
+            );
 
         if (error) {
             toast.error("Error updating user location. Please try again.");
@@ -115,7 +144,9 @@ const Rooms = () => {
     };
 
     const addUserToRoom = async () => {
-        if (!roomCode || roomCode.length === 0) {
+        const normalizedRoomCode = roomCode.trim();
+
+        if (!normalizedRoomCode) {
             toast.error("Please enter a room code.");
             return;
         }
@@ -128,7 +159,7 @@ const Rooms = () => {
         const { data: rooms, error: roomError } = await supabase
             .from("rooms")
             .select("id")
-            .eq("room_code", roomCode)
+            .eq("room_code", normalizedRoomCode)
             .single();
 
         if (roomError) {
@@ -141,40 +172,62 @@ const Rooms = () => {
         }
 
         const roomId = rooms.id;
+        const userId = JSON.parse(localStorage.getItem("userObject")!).id;
+
+        let latestCoordinates = coordinates;
+        try {
+            latestCoordinates = await getFreshCoordinates();
+            setCoordinates(latestCoordinates);
+        } catch (error) {
+            console.error("Error getting fresh location:", error);
+        }
+
+        const { data: existingMembership, error: existingMembershipError } = await supabase
+            .from("room_members")
+            .select("room_id")
+            .eq("room_id", roomId)
+            .eq("user_id", userId)
+            .maybeSingle();
+
+        if (existingMembershipError) {
+            console.error("Error checking room membership:", existingMembershipError);
+            toast.error("Error checking room membership. Please try again.");
+            setLoading({
+                createRoom: false,
+                addUserToRoom: false,
+            });
+            return;
+        }
+
+        if (existingMembership) {
+            await updateLocation(latestCoordinates);
+            navigate("/user/dashboard/" + normalizedRoomCode);
+            setLoading({
+                createRoom: false,
+                addUserToRoom: false,
+            });
+            return;
+        }
 
         const { error: membershipError } = await supabase
             .from("room_members")
             .insert({
                 room_id: roomId,
-                user_id: JSON.parse(localStorage.getItem("userObject")!).id,
+                user_id: userId,
             });
 
         if (membershipError) {
             if (membershipError.code === "23505") {
-                toast.error("User already added to room.");
-                updateLocation();
-                navigate("/user/dashboard/" + roomCode);
+                await updateLocation(latestCoordinates);
+                navigate("/user/dashboard/" + normalizedRoomCode);
             } else {
                 console.error("Error adding user to room:", membershipError);
                 toast.error("Error adding user to room. Please try again.");
             }
         } else {
             toast.success("User added to room successfully!");
-
-            const { error } = await supabase.from("user_location").insert({
-                latitude: coordinates.latitude,
-                longitude: coordinates.longitude,
-                user_id: JSON.parse(localStorage.getItem("userObject")!).id,
-                updated_at: new Date().toISOString(),
-                email: JSON.parse(localStorage.getItem("userObject")!).email,
-            });
-
-            if (error) {
-                console.error("Error updating user location:", error);
-                toast.error("Error updating user location. Please try again.");
-            }
-
-            navigate("/user/dashboard/" + roomCode);
+            await updateLocation(latestCoordinates);
+            navigate("/user/dashboard/" + normalizedRoomCode);
         }
 
         setLoading({
@@ -232,6 +285,7 @@ const Rooms = () => {
                                 />
                             </div>
                             <button
+                                type="button"
                                 className={styles.authButton}
                                 onClick={(e) => {
                                     e.preventDefault();
